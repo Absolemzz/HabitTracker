@@ -1,40 +1,41 @@
-// Root UI container for the Habit Tracker
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import HabitList from './components/HabitList';
 import type { Habit } from './types';
 
-// Mock habit data for testing
-const initialHabits: Habit[] = [
-  { id: 1, name: 'Drink Water', completed: true },
-  { id: 2, name: 'Exercise', completed: false },
-  { id: 3, name: 'Read Book', completed: true },
-];
-
 function App() {
-  // State to manage habits
-  const [habits, setHabits] = useState<Habit[]>(initialHabits);
-
-  // State for the new habit input
+  const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
-
-  // Ref for input to auto-focus
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Toggle habit completion by ID
-  const toggleHabit = (id: number) => {
-    setHabits(
-      habits.map((habit) =>
-        habit.id === id ? { ...habit, completed: !habit.completed } : habit
-      )
-    );
+  // Load habits from backend on initial render
+  useEffect(() => {
+    fetch('http://localhost:3001/habits')
+      .then((res) => res.json())
+      .then((data) => setHabits(data))
+      .catch(() => alert('Failed to load habits.'));
+  }, []);
+
+  // toggleHabit to sync with backend using your backend toggle route
+  const toggleHabit = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:3001/habits/${id}/toggle`, {
+        method: 'PUT',
+      });
+      if (!res.ok) throw new Error();
+
+      const updatedHabit = await res.json();
+      setHabits((prev) =>
+        prev.map((habit) => (habit.id === id ? updatedHabit : habit))
+      );
+    } catch {
+      alert('Failed to update habit status.');
+    }
   };
 
-  // Adds new habit handler
-  const handleAddHabit = () => {
+  const handleAddHabit = async () => {
     const trimmed = newHabit.trim();
-    if (!trimmed) return; // prevent empty input
+    if (!trimmed) return;
 
-    // Check for duplicate habit name (case-insensitive)
     const isDuplicate = habits.some(
       (habit) => habit.name.toLowerCase() === trimmed.toLowerCase()
     );
@@ -43,26 +44,44 @@ function App() {
       return;
     }
 
-    const newId = habits.length > 0 ? habits[habits.length - 1].id + 1 : 1;
-    const newHabitItem: Habit = {
-      id: newId,
-      name: trimmed,
-      completed: false,
-    };
+    try {
+      const res = await fetch('http://localhost:3001/habits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: trimmed, completed: false }),
+      });
 
-    setHabits([...habits, newHabitItem]);
-    setNewHabit('');
+      if (!res.ok) throw new Error();
 
-    // Auto-focus input after adding
-    inputRef.current?.focus();
+      const createdHabit = await res.json();
+      setHabits((prev) => [...prev, createdHabit]);
+      setNewHabit('');
+      inputRef.current?.focus();
+    } catch {
+      alert('Failed to add habit.');
+    }
+  };
+
+  const deleteHabit = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this habit?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:3001/habits/${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setHabits((prev) => prev.filter((habit) => habit.id !== id));
+      } else {
+        alert('Failed to delete habit.');
+      }
+    } catch {
+      alert('Error deleting habit.');
+    }
   };
 
   return (
-    // Full-screen dark layout with centered content
     <div className="min-h-screen bg-gray-950 text-white p-6 flex items-start justify-center">
-      {/* Main container for content */}
       <div className="w-full max-w-md space-y-6">
-        {/* App title and subtitle */}
         <div className="text-center space-y-1">
           <h1 className="text-4xl font-extrabold tracking-tight text-white">
             Habit Tracker
@@ -72,7 +91,6 @@ function App() {
           </p>
         </div>
 
-        {/* New Habit Input Section */}
         <div className="flex gap-2">
           <input
             ref={inputRef}
@@ -90,13 +108,16 @@ function App() {
           </button>
         </div>
 
-        {/* Habit list */}
-        <HabitList habits={habits} toggleHabit={toggleHabit} />
+        <HabitList habits={habits} toggleHabit={toggleHabit} deleteHabit={deleteHabit} />
       </div>
     </div>
   );
 }
 
 export default App;
+
+
+
+
 
 
