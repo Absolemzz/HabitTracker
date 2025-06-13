@@ -10,6 +10,7 @@ interface HabitListProps {
   deleteHabit: (id: number) => void;
 }
 
+// Renders a list of habits or a placeholder if none exist //
 function HabitList({ habits, toggleHabit, deleteHabit }: HabitListProps) {
   if (habits.length === 0) {
     return (
