@@ -1,4 +1,5 @@
 import type { Habit } from '../types';
+import { CirclePlus } from 'lucide-react'; // Import CirclePlus icon
 
 // Props interface for HabitList component
 interface HabitListProps {
@@ -6,7 +7,7 @@ interface HabitListProps {
   // eslint-disable-next-line no-unused-vars
   toggleHabit: (id: number) => void;
   // eslint-disable-next-line no-unused-vars
-  deleteHabit: (id: number) => void; // add delete prop
+  deleteHabit: (id: number) => void;
 }
 
 function HabitList({ habits, toggleHabit, deleteHabit }: HabitListProps) {
@@ -24,31 +25,36 @@ function HabitList({ habits, toggleHabit, deleteHabit }: HabitListProps) {
         <div
           key={habit.id}
           onClick={() => toggleHabit(habit.id)}
-          className={`flex items-center p-3 rounded-xl border border-gray-700 cursor-pointer transition-colors duration-200 ${
+          className={`group flex items-center p-4 rounded-xl border border-gray-700 cursor-pointer transition-colors duration-200 ${
             habit.completed
-              ? 'bg-blue-600 text-white'
+              ? 'bg-blue-700 text-white'
               : 'bg-gray-800 text-white hover:bg-gray-700'
           }`}
         >
-          {/* Delete button */}
+          {/* Habit name */}
+          <span className="text-lg font-medium mr-2 capitalize-first">
+            {habit.name}
+          </span>
+
+          {/* Status (with hover title for accessibility) */}
+          <span
+            className="text-sm opacity-80 ml-auto"
+            title={habit.completed ? 'Completed' : 'Pending'}
+          >
+            {habit.completed ? 'Done' : '●'}
+          </span>
+
+          {/* Delete button (visible on hover) */}
           <button
-            className="text-white text-lg font-bold mr-3 select-none hover:text-red-500"
+            className="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-red-500 ml-2"
             onClick={(e) => {
               e.stopPropagation(); // prevent toggle when clicking delete
               deleteHabit(habit.id);
             }}
             aria-label={`Delete habit ${habit.name}`}
           >
-            &times;
+            ×
           </button>
-
-          {/* Habit name */}
-          <span className="flex-1 text-base font-medium">{habit.name}</span>
-
-          {/* Status */}
-          <span className="text-sm opacity-80">
-            {habit.completed ? 'Done' : 'Pending'}
-          </span>
         </div>
       ))}
     </div>
@@ -56,5 +62,8 @@ function HabitList({ habits, toggleHabit, deleteHabit }: HabitListProps) {
 }
 
 export default HabitList;
+
+
+
 
 

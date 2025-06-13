@@ -1,5 +1,13 @@
-/* Global styles with TailWind CSS */
-
+/* Global styles with Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom CSS */
+.capitalize-first {
+  display: inline-block; /* Ensures ::first-letter works */
+}
+
+.capitalize-first::first-letter {
+  text-transform: uppercase;
+}
