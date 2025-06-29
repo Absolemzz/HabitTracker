@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import HabitList from './components/HabitList';
 import type { Habit } from './types';
-import { Plus } from 'lucide-react';
+import { Plus, Calendar } from 'lucide-react';
 
 // Main app component for managing and displaying habits //
 function App() {
@@ -117,14 +117,14 @@ function App() {
         </div>
 
         {/* Input and button for adding new habits */}
-        <div className="flex flex-col sm:flex-row gap-2 items-center">
+        <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
           <input
             ref={inputRef}
             type="text"
             value={newHabit}
             onChange={(e) => setNewHabit(e.target.value)}
             placeholder="Add a new habit..."
-            className="flex-1 px-3 py-2 rounded-lg bg-gray-800 text-white border border-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-700"
+            className="w-full px-3 py-2 rounded-lg bg-gray-800 text-white border border-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-700"
           />
           <button
             onClick={handleAddHabit}
@@ -133,6 +133,13 @@ function App() {
             <Plus className="w-6 h-6" />
           </button>
         </div>
+
+        {/* Empty state with a calendar icon */}
+        {habits.length === 0 && (
+        <div className="text-center text-gray-400 mt-4">
+            <Calendar className="w-36 h-36 mx-auto text-gray-500" />
+          </div>
+        )}
 
         {/* Render the list of habits */}
         <HabitList
