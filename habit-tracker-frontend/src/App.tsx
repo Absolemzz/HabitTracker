@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import HabitList from './components/HabitList';
+import DatePicker from './DatePicker';
 import type { Habit } from './types';
 import { Plus, Calendar } from 'lucide-react';
 
@@ -8,6 +9,7 @@ function App() {
 
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -85,7 +87,6 @@ function App() {
     }
   };
 
-  // Progress calculation
   const completedCount = habits.filter((h) => h.completed).length;
   const totalCount = habits.length;
   const progressPercent = totalCount === 0 ? 0 : (completedCount / totalCount) * 100;
@@ -102,15 +103,19 @@ function App() {
       }}
     >
       <div className="w-full max-w-md space-y-6 bg-black/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="capitalize-first text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            daily habits
+            Daily Habits
           </h1>
           <p className="text-sm text-gray-400">
             Your Journey to Consistent Progress
           </p>
+        </div>
+
+        {/* Date Picker */}
+        <div>
+          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
         </div>
 
         {/* Add Habit Input */}
@@ -136,7 +141,6 @@ function App() {
           </button>
         </div>
 
-        {/* Limit Reached Message */}
         {habits.length >= MAX_HABITS && (
           <p className="text-sm text-red-500 text-center">
             Daily habit limit reached (7).
@@ -149,7 +153,7 @@ function App() {
             <div className="flex justify-between text-sm text-gray-400 font-medium">
               <span>{progressPercent === 100 ? 'All done!' : "Today's Progress"}</span>
               <span>
-                {Math.round(progressPercent)}%  ({completedCount} / {totalCount})
+                {Math.round(progressPercent)}% ({completedCount} / {totalCount})
               </span>
             </div>
             <div className="w-full h-2 bg-gray-700 rounded">
@@ -161,7 +165,7 @@ function App() {
           </div>
         )}
 
-        {/* Empty State Calendar */}
+        {/* Empty State */}
         {habits.length === 0 && (
           <div className="text-center text-gray-400 mt-4">
             <Calendar className="w-36 h-36 mx-auto text-gray-500" />
@@ -180,6 +184,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
