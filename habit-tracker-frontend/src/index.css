@@ -17,7 +17,7 @@
 /* Remove white border and fix selected styling */
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
-  background-color: #2563eb !important; /* Tailwind blue-600 */
+  background-color: #9333ea !important; /* Tailwind purple-600 */
   color: white !important;
   border: none !important;
   outline: none !important;

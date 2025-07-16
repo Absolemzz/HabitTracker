@@ -33,9 +33,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onChange }) => {
             return [
               'rounded-full transition-colors text-sm',
               isSelected
-                ? '!bg-blue-600 !text-white !border-none !outline-none'
+                ? '!bg-purple-600 !text-white !border-none !outline-none'
                 : isTodayDate
-                  ? 'bg-gray-700 text-white hover:bg-blue-600'
+                  ? 'bg-gray-700 text-white hover:bg-purple-600'
                   : 'text-white hover:bg-gray-700',
               isOutsideMonth ? 'text-gray-500' : ''
             ].join(' ');
