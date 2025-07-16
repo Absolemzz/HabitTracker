@@ -48,7 +48,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/monthly-summary', {
+        const res = await axios.get('https://habit-tracker-backend-rhlq.onrender.com/api/monthly-summary', {
           params: { year: currentYear, month: currentMonthIndex },
         });
         setHabitData(res.data);
