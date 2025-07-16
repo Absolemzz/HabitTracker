@@ -1,8 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react'; 
 import HabitList from '../components/HabitList';
 import DatePicker from '../DatePicker';
 import type { Habit } from '../types';
 import { Plus, Calendar } from 'lucide-react';
+
+// ✅ Use deployed backend URL
+const API_BASE = 'https://habit-tracker-backend-rhlq.onrender.com';
 
 function HabitPage() {
   const MAX_HABITS = 7;
@@ -12,7 +15,7 @@ function HabitPage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/habits')
+    fetch(`${API_BASE}/habits`)
       .then((res) => res.json())
       .then((data) => setHabits(data))
       .catch(() => alert('Failed to load habits.'));
@@ -20,7 +23,7 @@ function HabitPage() {
 
   const toggleHabit = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:3001/habits/${id}/toggle`, {
+      const res = await fetch(`${API_BASE}/habits/${id}/toggle`, {
         method: 'PUT',
       });
       if (!res.ok) throw new Error();
@@ -49,7 +52,7 @@ function HabitPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/habits', {
+      const res = await fetch(`${API_BASE}/habits`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: trimmed, completed: false }),
@@ -67,7 +70,7 @@ function HabitPage() {
   const deleteHabit = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this habit?')) return;
     try {
-      const res = await fetch(`http://localhost:3001/habits/${id}`, {
+      const res = await fetch(`${API_BASE}/habits/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {
@@ -89,10 +92,10 @@ function HabitPage() {
       <div className="p-6 flex items-start justify-center">
         <div className="w-full max-w-md space-y-6 bg-gray-900/80 border border-gray-800 backdrop-blur-md p-6 rounded-2xl shadow-md transition-all duration-300">
 
-          {/* Date Picker */}
+          {/* 📅 Date Picker */}
           <DatePicker selectedDate={selectedDate} onChange={(d) => d && setSelectedDate(d)} />
 
-          {/* Add Habit Input */}
+          {/* ➕ Add Habit Input */}
           <div className="flex items-center gap-2">
             <input
               ref={inputRef}
@@ -121,7 +124,7 @@ function HabitPage() {
             </p>
           )}
 
-          {/* Progress Bar */}
+          {/* 📊 Progress Bar */}
           {totalCount > 0 && (
             <div className="space-y-1">
               <div className="flex justify-between text-sm text-gray-400 font-medium">
@@ -137,14 +140,14 @@ function HabitPage() {
             </div>
           )}
 
-          {/* Empty State */}
+          {/* 🕳 Empty State */}
           {habits.length === 0 && (
             <div className="text-center text-gray-400 mt-4">
               <Calendar className="w-36 h-36 mx-auto text-gray-500" />
             </div>
           )}
 
-          {/* Habit List */}
+          {/* ✅ Habit List */}
           <HabitList habits={habits} toggleHabit={toggleHabit} deleteHabit={deleteHabit} />
         </div>
       </div>
@@ -153,3 +156,4 @@ function HabitPage() {
 }
 
 export default HabitPage;
+
