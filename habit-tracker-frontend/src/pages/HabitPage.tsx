@@ -4,7 +4,7 @@ import DatePicker from '../DatePicker';
 import type { Habit } from '../types';
 import { Plus, Calendar } from 'lucide-react';
 
-// ✅ Use deployed backend URL
+// Use deployed backend URL
 const API_BASE = 'https://habit-tracker-backend-rhlq.onrender.com';
 
 function HabitPage() {
@@ -92,10 +92,10 @@ function HabitPage() {
       <div className="p-6 flex items-start justify-center">
         <div className="w-full max-w-md space-y-6 bg-gray-900/80 border border-gray-800 backdrop-blur-md p-6 rounded-2xl shadow-md transition-all duration-300">
 
-          {/* 📅 Date Picker */}
+          {/* Date Picker */}
           <DatePicker selectedDate={selectedDate} onChange={(d) => d && setSelectedDate(d)} />
 
-          {/* ➕ Add Habit Input */}
+          {/* Add Habit Input */}
           <div className="flex items-center gap-2">
             <input
               ref={inputRef}
@@ -124,7 +124,7 @@ function HabitPage() {
             </p>
           )}
 
-          {/* 📊 Progress Bar */}
+          {/* Progress Bar */}
           {totalCount > 0 && (
             <div className="space-y-1">
               <div className="flex justify-between text-sm text-gray-400 font-medium">
@@ -147,7 +147,7 @@ function HabitPage() {
             </div>
           )}
 
-          {/* ✅ Habit List */}
+          {/* Habit List */}
           <HabitList habits={habits} toggleHabit={toggleHabit} deleteHabit={deleteHabit} />
         </div>
       </div>
