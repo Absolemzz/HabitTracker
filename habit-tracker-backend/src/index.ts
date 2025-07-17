@@ -30,7 +30,7 @@ interface MonthlySummary {
 
 let db: Database<sqlite3.Database>;
 
-// 🧠 Streak utility
+// Streak utility
 function calculateStreaks(days: number[]): { bestStreak: number; currentStreak: number } {
   const sorted = [...days].sort((a, b) => a - b);
   let best = 0;
@@ -80,6 +80,16 @@ const asyncHandler = (
       driver: sqlite3.Database,
     });
 
+    // Habits table
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS habits (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT,
+        completed INTEGER DEFAULT 0
+      )  
+    `);
+    
     // Create tables
     await db.run(`
       CREATE TABLE IF NOT EXISTS monthly_summaries (
