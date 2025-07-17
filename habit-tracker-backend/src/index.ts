@@ -80,17 +80,15 @@ const asyncHandler = (
       driver: sqlite3.Database,
     });
 
-    // Habits table
     await db.run(`
       CREATE TABLE IF NOT EXISTS habits (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         description TEXT,
         completed INTEGER DEFAULT 0
-      )  
+      )
     `);
 
-    // Create tables
     await db.run(`
       CREATE TABLE IF NOT EXISTS monthly_summaries (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -145,7 +143,7 @@ app.put('/habits/:id/toggle', asyncHandler(async (req: Request, res: Response) =
     return res.status(500).json({ error: 'Failed to retrieve updated habit' });
   }
 
-  // 🟣 Update Monthly Summary
+  // Update Monthly Summary
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -217,7 +215,13 @@ app.get('/api/monthly-summary', asyncHandler(async (req: Request, res: Response)
   );
 
   if (!summary) {
-    return res.status(404).json({ message: 'No data found for that month' });
+    return res.status(200).json({
+      completedDays: [],
+      partialDays: [],
+      totalCompleted: 0,
+      bestStreak: 0,
+      currentStreak: 0
+    });
   }
 
   res.json({
