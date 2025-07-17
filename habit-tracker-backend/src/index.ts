@@ -89,7 +89,7 @@ const asyncHandler = (
         completed INTEGER DEFAULT 0
       )  
     `);
-    
+
     // Create tables
     await db.run(`
       CREATE TABLE IF NOT EXISTS monthly_summaries (
@@ -104,21 +104,6 @@ const asyncHandler = (
         UNIQUE(year, month)
       )
     `);
-
-    // Seed July 2025 mock data
-    await db.run(`
-      INSERT OR IGNORE INTO monthly_summaries (
-        year, month, completed_days, partial_days, total_completed, best_streak, current_streak
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [
-      2025,
-      6, // July (0-indexed)
-      JSON.stringify([1, 2, 5, 6, 9, 10, 13, 18, 20]),
-      JSON.stringify([3, 7, 15, 21]),
-      9,
-      5,
-      1,
-    ]);
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
