@@ -1,6 +1,19 @@
 # Habit Tracker
 
-A full-stack Habit Tracker application built with a React + TypeScript frontend and a Node.js + Express backend API. The project is split into two folders: one for the frontend and one for the backend.
+A full-stack habit tracking application built with React, TypeScript, and Tailwind CSS on the frontend, and Node.js + Express on the backend.
+
+## Features
+
+- Add and delete habits
+- Track streaks for each habit
+- Clean, responsive UI with Tailwind CSS
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React, TypeScript, Tailwind CSS |
+| Backend | Node.js, Express |
 
 ## Repository Structure
 
@@ -11,38 +24,34 @@ A full-stack Habit Tracker application built with a React + TypeScript frontend 
 
 ### Prerequisites
 
-- Node.js (v16 or newer recommended)
-- npm package manager
+- Node.js (v16 or newer)
+- npm
 
-### Installation and Running Locally
+### Installation
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/YourUsername/HabitTracker.git
+```bash
+   git clone https://github.com/Absolemzz/HabitTracker.git
    cd HabitTracker
+```
 
-Start the backend server:
+2. Start the backend server:
+```bash
+   cd habit-tracker-backend
+   npm install
+   npm run dev
+```
+   The backend API will run on `http://localhost:3001`
 
+3. In a separate terminal, start the frontend:
+```bash
+   cd habit-tracker-frontend
+   npm install
+   npm run dev
+```
+   The frontend will be available at `http://localhost:3000`
 
-cd habit-tracker-backend
-npm install
-npm run dev
+## License
 
-The backend API will be running on http://localhost:3001 by default.
-
-In a separate terminal, start the frontend app:
-
-
-cd habit-tracker-frontend
-npm install
-npm run dev
-
-The frontend will be available at http://localhost:3000.
-
-Additional Information
-The frontend communicates with the backend API to manage habit data. For more detailed instructions, refer to the README.md files in the habit-tracker-frontend and habit-tracker-backend subfolders.
-
-License
-MIT License
+MIT
 
